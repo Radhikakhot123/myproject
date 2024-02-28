@@ -16,11 +16,11 @@ public:
      {
          return season;
      }
-    void setSeason(string& newSeason)
+    void setSeason(string& season1)
     {
-        season = newSeason;
+        season = season1;
     }
-    void setTemperature(int newTemperature) { temperature = newTemperature; }
+    void setTemperature(int newTemp) { temperature = newTemp; }
 };
 
 
@@ -29,9 +29,9 @@ private:
     int temperature;
 
 public:
-    WaterHeater(int temperature1)
+    WaterHeater(int t1)
      {
-         temperature = temperature1;
+         temperature = t1;
       }
 
 
@@ -39,26 +39,68 @@ public:
      {
          return temperature;
     }
-    void setTemperature(int newTemperature)
+    void setTemperature(int t2)
     {
-        temperature = newTemperature;
+
+        temperature = t2;
     }
+    void adjust( EnvironmentSensor& sensor) {
+        if (sensor.getSeason() == "Summer" )
+        {
+            temperature = 60;
+            cout<<"The Heater temperature is"<<temperature<<endl;
+        } else if(sensor.getSeason() == "Winter")
+        {
+            temperature = 100;
+            cout<<"The Heater temperature is"<<temperature<<endl;
+        }
+        else
+        {
+             temperature=30;
+             cout<<"The Heater temperature is"<<temperature<<endl;
+        }
+    }
+
 };
 
 
 class SmartGeyser : public WaterHeater, public EnvironmentSensor {
 public:
-    // Constructor
-    SmartGeyser(string season, int temperature, int heaterTemperature): WaterHeater(heaterTemperature), EnvironmentSensor(season, temperature) {}
+     int status;
+    SmartGeyser(string season, int temperature, int heaterTemperature):
+         WaterHeater(heaterTemperature), EnvironmentSensor(season, temperature) {}
+        void turnOn()
+     {
+        status = 1;
+        cout << "Geyser is turned on." <<endl;
+      }
 
-    // Additional methods specific to SmartGeyser can be added here
+    // Turn off the geyser
+    void turnOff() {
+        status = 0;
+        cout << "Geyser is turned off." <<endl;
+    }
+
+    void Print() {
+        adjust(*this);
+        if (status == 1)
+            turnOn();
+        else
+            turnOff();
+    }
+
+
 };
 
-int main() {
-    // Example usage
-    SmartGeyser geyser("Winter", 10.5, 60);
-    std::cout << "Current season: " << geyser.getSeason() << endl;
-    std::cout << "Current temperature: " << geyser.getTemperature() << " C" <<endl;
-    std::cout << "Heater temperature: " << geyser.WaterHeater::getTemperature() << " C" <<endl;
+int main()
+{
+
+    SmartGeyser geyser("Summer", 10.5, 60);
+    cout << "Current season: " << geyser.getSeason() << endl;
+    cout << "Current temperature: " << geyser.getTemperature() << " C" <<endl;
+
+   EnvironmentSensor sensor("Winter", 10.5);
+    geyser.Print();
+
     return 0;
 }
