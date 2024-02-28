@@ -1,5 +1,5 @@
 
-class SmartGeyser : public WaterHeater,public EnvironmentSensor {
+class SmartGeyser :public WaterHeater,public EnvironmentSensor{
 public:
      int status;
     SmartGeyser(string season, int temperature, int heaterTemperature):

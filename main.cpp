@@ -6,6 +6,7 @@
 
 
 
+
 using namespace std;
 
 int main()
@@ -17,6 +18,9 @@ int main()
 
    EnvironmentSensor sensor("Winter", 10.5);
     geyser.Print();
+
+    HomeOwner owner("John Doe");
+    cout << "Homeowner: " << owner.getName() <<endl;
 
     return 0;
 }
